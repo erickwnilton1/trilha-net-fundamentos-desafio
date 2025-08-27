@@ -33,39 +33,51 @@ namespace DesafioFundamentos.Models
                 {
                     veiculos.Add(PlacaDoVeiculo);
                     Console.WriteLine("Véiculo estacionado com sucesso.");
+                    return;
                 }
             }
         }
 
         public void RemoverVeiculo()
         {
+            while (true)
+            {
             Console.WriteLine("Digite a placa do veículo para remover:");
 
             string placa = Console.ReadLine();
 
-            if (veiculos.Any(x => x.ToUpper() == placa.ToUpper()))
-            {
-                Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado:");
-
-                int horasVeiculoEstacionado = int.Parse(Console.ReadLine());
-
-                // TODO: Realizar o seguinte cálculo: "precoInicial + precoPorHora * horas" para a variável valorTotal      
-                decimal somaDoPrecoInicialePrecoPorHora = precoInicial + precoPorHora; 
+                if (string.IsNullOrEmpty(placa))
+                {
+                    Console.WriteLine("Véiculo não localizado");
+                    break;
+                }
 
 
-                // *IMPLEMENTE AQUI*
-                int horas = horasVeiculoEstacionado;
-                decimal valorTotal = somaDoPrecoInicialePrecoPorHora * horas; 
+                if (veiculos.Any(x => x.ToUpper() == placa.ToUpper()))
+                {
+                    Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado:");
 
-                // TODO: Remover a placa digitada da lista de veículos
-                // *IMPLEMENTE AQUI*
+                    int horasVeiculoEstacionado = int.Parse(Console.ReadLine());
 
-                Console.WriteLine($"O veículo {placa} foi removido e o preço total foi de: R$ {valorTotal}");
+                    decimal somaDoPrecoInicialePrecoPorHora = precoInicial + precoPorHora;
+
+
+                    int horas = horasVeiculoEstacionado;
+                    decimal valorTotal = somaDoPrecoInicialePrecoPorHora * horas;
+
+                    veiculos.Remove(placa);
+
+                    Console.WriteLine($"O veículo {placa} foi removido e o preço total foi de: R$ {valorTotal}");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Desculpe, esse veículo não está estacionado aqui. Confira se digitou a placa corretamente");
+                }
             }
-            else
-            {
-                Console.WriteLine("Desculpe, esse veículo não está estacionado aqui. Confira se digitou a placa corretamente");
-            }
+
+
+
         }
 
         public void ListarVeiculos()
@@ -73,9 +85,12 @@ namespace DesafioFundamentos.Models
             if (veiculos.Any())
             {
                 Console.WriteLine("Os veículos estacionados são:");
+
+                int vagasEstacionamento = 1;
                 foreach (string items in veiculos)
                 {
-                    Console.WriteLine(items);
+                    Console.WriteLine($"Na vaga {vagasEstacionamento} : {items}");
+                    vagasEstacionamento++;
                 }
             }
             else
